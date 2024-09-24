@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  upload-svc:
+    image: charmetrold/uploadapi_tag:latest
+    environment:
+      - ImagePath=/srv/images
+    ports:
+      - "5001:8080"
+    networks:
+      - default
+    volumes:
+      - vol-images:/srv/images
+
+  list-svc:
+    image: soekopaacykel/list-image:latest
+    environment:
+      - ImagePath=/srv/images
+    ports:
+      - "5002:8080"
+    networks:
+      - default
+    volumes:
+      - vol-images:/srv/images
+
+volumes:
+  vol-images:
+    external: false
+
+networks:
+  default:
+    driver: bridge
+    name: mitnet
