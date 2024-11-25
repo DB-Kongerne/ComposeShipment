@@ -6,6 +6,7 @@ services:
     image: soekopaacykel/shipping-service:latest
     environment:
       - Deliverys=/forsendelser
+      - RabbitHost=rabbitmq
     ports:
       - "5001:8080"
     networks:
@@ -18,12 +19,23 @@ services:
     image: soekopaacykel/delivery-service:latest
     environment:
       - Deliverys=/forsendelser
+      - RabbitHost=rabbitmq
     ports:
       - "5002:8080"
     networks:
       - default
     volumes:
       - haav-vol:/forsendelser
+  
+  RabbitMQ:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # RabbitMQ default AMQP port
+      - "15672:15672"  # RabbitMQ Management UI port
+    networks:
+      - default
+
 
 volumes:
   haav-vol:
